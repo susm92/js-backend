@@ -1,2 +1,2 @@
 # js-backend
-used as backend api for jsramverk course at BTH
+Used as backend api for jsramverk course at BTH (Blekinge institute of technology).
