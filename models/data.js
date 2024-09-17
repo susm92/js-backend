@@ -26,37 +26,49 @@ const data = {
        }
     },
 
-    createData: async function(res, req) {
+    getSpecificDocument: async function (res, req, id) {
         // req contains user object set in checkToken middleware
-        let apiKey = req.body.api_key;
-        let email = req.user.email;
         let db;
 
         try {
-            db = await database.getDb();
+            db = await database.getDb("jsramverk", "dokument");
+            let results = await db.collection.findOne({_id: ObjectId(id)});
 
-            const filter = { key: apiKey, "users.email": email };
-            const updateDoc = {
-                $push: {
-                    "users.$.data": {
-                        artefact: req.body.artefact,
-                        _id: new ObjectId(),
-                    }
+            res.send(results).status(200);
+        } catch (e) {
+            return res.status(500).json({
+                errors: {
+                    status: 500,
+                    path: "/data",
+                    title: "Database error",
+                    message: e.message
                 }
+            });
+        } 
+        finally {
+           await db.client.close();
+       }
+    },
+
+    createData: async function(res, req) {
+        // req contains user object set in checkToken middleware
+    
+        const { title, content } = req.body;
+
+        let db;
+
+        try {
+            db = await database.getDb("jsramverk", "dokument");
+
+            const newDocument = {
+                title: title,
+                content: content,
+                created_at: new Date(),
             };
-            const options = { returnDocument: "after" };
 
-            let result = await db.collection.findOneAndUpdate(
-                filter,
-                updateDoc,
-                options,
-            );
+            await db.collection.insertOne(newDocument);
 
-            if (result) {
-                return res.status(201).json({
-                    data: result.value
-                });
-            }
+            return res.status(201).send();
         } catch (e) {
             return res.status(500).json({
                 error: {
@@ -74,56 +86,18 @@ const data = {
     updateData: async function (res, req) {
         // req contains user object set in checkToken middleware
         if (req.body.id) {
-            let _id = req.body.id;
-            let newArtefact = req.body.artefact;
-            let filter = {
-                "users.data._id": ObjectId(_id)
-            };
+
+            const { id, title, content } = req.body;
+
             let db;
 
             try {
-                db = await database.getDb();
+                db = await database.getDb("jsramverk", "dokument");
 
-                const originalObject = await db.collection.findOne(filter);
-                const documentId = originalObject["_id"];
-                let copy = {};
-
-                for (const [key, value] of Object.entries(originalObject)) {
-                    if (!Array.isArray(value)) {
-                        copy[key] = value;
-                    }
-                }
-
-                copy.users = [];
-
-                originalObject.users.forEach((user) => {
-                    let newUser = {
-                        email: user.email,
-                        password: user.password,
-                    };
-
-                    if (user.data) {
-                        let newData = [];
-
-                        user.data.forEach((data) => {
-                            let dataCopy = Object.assign({}, data);
-
-                            if (data["_id"].equals(ObjectId(_id))) {
-                                dataCopy.artefact = newArtefact;
-                            }
-
-                            newData.push(dataCopy);
-                        });
-
-                        newUser.data = newData;
-                    }
-
-                    copy.users.push(newUser);
-                });
-
-                const updateFilter = { _id: documentId };
-
-                await db.collection.updateOne(updateFilter, { $set: copy });
+                await db.collection.updateOne(
+                    { _id: ObjectId(id) },
+                    { $set: { title, content } }
+                );
 
                 return res.status(204).send();
             } catch (e) {
