@@ -56,7 +56,7 @@ const data = {
         const { title, content } = req.body;
 
         let db;
-
+        
         try {
             db = await database.getDb("jsramverk", "dokument");
 
