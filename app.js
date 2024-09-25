@@ -8,7 +8,7 @@ require('dotenv').config();
 
 const data = require("./routes/data.js");
 
-const port = 3030;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.options('*', cors());
