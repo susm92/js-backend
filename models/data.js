@@ -2,8 +2,7 @@ const database = require("../db/database.js");
 const ObjectId = require('mongodb').ObjectId;
 
 const data = {
-    getAllDocuments: async function (res, req) {
-        // req contains user object set in checkToken middleware
+    getAllDocuments: async function (res, req) {    // eslint-disable-line
         let db;
 
         try {
@@ -20,14 +19,12 @@ const data = {
                     message: e.message
                 }
             });
-        } 
-        finally {
-           await db.client.close();
-       }
+        } finally {
+            await db.client.close();
+        }
     },
 
     getSpecificDocument: async function (res, req, id) {
-        // req contains user object set in checkToken middleware
         let db;
 
         try {
@@ -44,19 +41,16 @@ const data = {
                     message: e.message
                 }
             });
-        } 
-        finally {
-           await db.client.close();
-       }
+        } finally {
+            await db.client.close();
+        }
     },
 
     createData: async function(res, req) {
-        // req contains user object set in checkToken middleware
-    
         const { title, content } = req.body;
 
         let db;
-        
+
         try {
             db = await database.getDb("jsramverk", "dokument");
 
@@ -84,11 +78,8 @@ const data = {
     },
 
     updateData: async function (res, req) {
-        // req contains user object set in checkToken middleware
         if (req.body.id) {
-
             const { id, title, content } = req.body;
-
             let db;
 
             try {
@@ -125,7 +116,6 @@ const data = {
     },
 
     deleteData: async function (res, req) {
-        // req contains user object set in checkToken middleware
         if (req.body.id) {
             let _id = req.body.id;
 
