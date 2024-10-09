@@ -11,8 +11,12 @@ router.post(
     '/register',
     [
         // Input validation (optional, but recommended)
-        body('username').isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
-        body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+        body('username')
+            .isLength({ min: 3 })
+            .withMessage('Username must be at least 3 characters long'),
+        body('password')
+            .isLength({ min: 6 })
+            .withMessage('Password must be at least 6 characters long')
     ],
     async (req, res) => {
         const errors = validationResult(req);
