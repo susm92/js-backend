@@ -40,7 +40,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 // JWT strategy for verifying the JWT token
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'your_jwt_secret',  // Ensure you set a secret in a config or environment variable
+    secretOrKey: `${process.env.SECRET_KEY}`,  // Ensure you set a secret in a config or environment variable
 }, async (jwtPayload, done) => {
     let db;
 
