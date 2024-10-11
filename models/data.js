@@ -47,7 +47,7 @@ const data = {
     },
 
     createData: async function(res, req) {
-        const { title, content } = req.body;
+        const { title, content, username } = req.body;
 
         let db;
 
@@ -57,6 +57,8 @@ const data = {
             const newDocument = {
                 title: title,
                 content: content,
+                owner: username,
+                contributors: [],
                 created_at: new Date(),
             };
 

@@ -2,14 +2,13 @@ const express = require('express');
 const router = express.Router();
 const mailgun = require('mailgun-js');
 
-//const authenticateToken = require('../middleware/auth.js');
+const authenticateToken = require('../middleware/auth.js');
 //const data = require("../models/data.js");
 
 const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN });
 
 router.post('/',
-    //authenticateToken,
-    //(req, res) => data.getAllDocuments(res, req)
+    authenticateToken,
     (req, res) => { 
         const { to, subject, text } = req.body;
 
