@@ -64,7 +64,7 @@ router.get('/protected', passport.authenticate('jwt', { session: false }), (req,
     // If authentication is successful, return the protected resource
     return res.json({
         message: 'You have access to this protected route',
-        user: req.user.username // Contains the authenticated user data
+        user: req.user // Contains the authenticated user data
     });
 });
 

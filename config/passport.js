@@ -47,8 +47,6 @@ passport.use(new JwtStrategy({
 }, async (jwtPayload, done) => {
     let db;
 
-    console.log("coming to passport.js");
-
     try {
         // Connect to the database and fetch the user by ID from the JWT payload
         db = await database.getDb('jsramverk', 'users');

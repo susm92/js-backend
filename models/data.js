@@ -58,6 +58,7 @@ const data = {
                 title: title,
                 content: content,
                 contributors: [username],
+                comments : [],
                 created_at: new Date(),
             };
 
