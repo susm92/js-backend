@@ -3,6 +3,8 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.js'); // Your updated User model
 const { body, validationResult } = require('express-validator'); // For input validation
+const dotenv = require('dotenv');
+dotenv.config();
 
 const router = express.Router();
 
@@ -58,10 +60,11 @@ router.post('/login', async (req, res, next) => {
 
 // Protected route (example)
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
+
     // If authentication is successful, return the protected resource
     return res.json({
         message: 'You have access to this protected route',
-        user: req.user // Contains the authenticated user data
+        user: req.user.username // Contains the authenticated user data
     });
 });
 

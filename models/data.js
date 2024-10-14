@@ -57,8 +57,7 @@ const data = {
             const newDocument = {
                 title: title,
                 content: content,
-                owner: username,
-                contributors: [],
+                contributors: [username],
                 created_at: new Date(),
             };
 
@@ -115,6 +114,9 @@ const data = {
                 }
             });
         }
+    },
+
+    contributorData: async function (res, req) {
     },
 
     deleteData: async function (res, req) {

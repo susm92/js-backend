@@ -8,7 +8,7 @@ const authenticateToken = require('../middleware/auth.js');
 const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN });
 
 router.post('/',
-    authenticateToken,
+    //authenticateToken,
     (req, res) => { 
         const { to, subject, text } = req.body;
 
