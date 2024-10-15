@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user.js'); // Your updated User model
 const { body, validationResult } = require('express-validator'); // For input validation
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 const router = express.Router();
@@ -22,10 +23,10 @@ router.post(
     ],
     async (req, res) => {
         const errors = validationResult(req);
+
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-
         // Call the createUser function from User model
         try {
             await User.createUser(req, res);  // Handles user creation
@@ -51,16 +52,15 @@ router.post('/login', async (req, res, next) => {
                 user: user
             });
         }
-
         // Generate JWT token after successful authentication
         const token = jwt.sign({ id: user._id }, `${process.env.SECRET_KEY}`, { expiresIn: '1h' });
+
         return res.json({ token });
     })(req, res, next);
 });
 
 // Protected route (example)
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
-
     // If authentication is successful, return the protected resource
     return res.json({
         message: 'You have access to this protected route',

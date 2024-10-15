@@ -3,13 +3,12 @@ const router = express.Router();
 const mailgun = require('mailgun-js');
 
 const authenticateToken = require('../middleware/auth.js');
-//const data = require("../models/data.js");
 
 const mg = mailgun({ apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN });
 
 router.post('/',
-    //authenticateToken,
-    (req, res) => { 
+    authenticateToken,
+    (req, res) => {
         const { to, subject, text } = req.body;
 
         const data = {
@@ -28,8 +27,9 @@ router.post('/',
                     }
                 });
             }
-        res.status(200).json({ message: 'Email sent', body });
+            res.status(200).json({ message: 'Email sent', body });
         });
-});
+    }
+);
 
 module.exports = router;

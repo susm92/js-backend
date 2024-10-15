@@ -8,7 +8,7 @@ router.get('/:username',
     (req, res) => data.getAllDocuments(res, req, req.params.username)
 );
 
-router.get('/:id',
+router.get('/document/:id',
     authenticateToken,
     (req, res) => data.getSpecificDocument(res, req, req.params.id)
 );

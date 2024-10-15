@@ -3,7 +3,9 @@ const jwt = require('jsonwebtoken');
 const secretKey = `${process.env.SECRET_KEY}`; // Hard-coded secret key for demonstration
 
 const authenticateToken = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Extract token from 'Authorization' header
+    // Extract token from 'Authorization' header
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
         return res.status(401).json({

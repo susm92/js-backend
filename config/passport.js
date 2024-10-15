@@ -6,6 +6,7 @@ const ObjectId = require('mongodb').ObjectId;
 const User = require('../models/user.js');
 const database = require('../db/database.js');
 const dotenv = require('dotenv');
+
 dotenv.config();
 
 // Local strategy for logging in with username and password
@@ -24,6 +25,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 
         // Check if the password is correct
         const isMatch = await User.comparePassword(password, user.password);
+
         if (!isMatch) {
             return done(null, false, { message: 'Incorrect password' });
         }
@@ -43,7 +45,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 // JWT strategy for verifying the JWT token
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: `${process.env.SECRET_KEY}`,  // Ensure you set a secret in a config or environment variable
+    secretOrKey: `${process.env.SECRET_KEY}`,  // secret stored in config or environment variable
 }, async (jwtPayload, done) => {
     let db;
 
