@@ -2,8 +2,12 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const { ExtractJwt } = require('passport-jwt');
+const ObjectId = require('mongodb').ObjectId;
 const User = require('../models/user.js');
 const database = require('../db/database.js');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 // Local strategy for logging in with username and password
 passport.use(new LocalStrategy(async (username, password, done) => {
@@ -21,6 +25,7 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 
         // Check if the password is correct
         const isMatch = await User.comparePassword(password, user.password);
+
         if (!isMatch) {
             return done(null, false, { message: 'Incorrect password' });
         }
@@ -40,14 +45,14 @@ passport.use(new LocalStrategy(async (username, password, done) => {
 // JWT strategy for verifying the JWT token
 passport.use(new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: `${process.env.SECRET_KEY}`,  // Ensure you set a secret in a config or environment variable
+    secretOrKey: `${process.env.SECRET_KEY}`,  // secret stored in config or environment variable
 }, async (jwtPayload, done) => {
     let db;
 
     try {
         // Connect to the database and fetch the user by ID from the JWT payload
         db = await database.getDb('jsramverk', 'users');
-        const user = await db.collection.findOne({ _id: new require('mongodb').ObjectId(jwtPayload.id) });
+        const user = await db.collection.findOne({ _id: ObjectId(jwtPayload.id) });
 
         if (!user) {
             return done(null, false);

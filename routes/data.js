@@ -3,14 +3,19 @@ const router = express.Router();
 const authenticateToken = require('../middleware/auth.js');
 const data = require("../models/data.js");
 
-router.get('/',
+router.get('/:username',
     authenticateToken,
-    (req, res) => data.getAllDocuments(res, req)
+    (req, res) => data.getAllDocuments(res, req, req.params.username)
 );
 
-router.get('/:id',
+router.get('/document/:id',
     authenticateToken,
     (req, res) => data.getSpecificDocument(res, req, req.params.id)
+);
+
+router.put('/share',
+    authenticateToken,
+    (req, res) => data.updateSharedData(res, req)
 );
 
 router.post('/',
