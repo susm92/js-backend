@@ -25,17 +25,7 @@ app.use(passport.initialize());
 app.get("/", (req, res) => {
     const data = {
         data: {
-            msg: "Hello World"
-        }
-    };
-
-    res.json(data);
-});
-
-app.get("/hello/:msg", (req, res) => {
-    const data = {
-        data: {
-            msg: req.params.msg
+            msg: "JS Backend API",
         }
     };
 
