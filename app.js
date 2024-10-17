@@ -38,17 +38,15 @@ io.on('connection', (socket) => {
 
     // Listening for content changes from a user
     socket.on('contentChange', ({ documentId, newContent }) => {
-        console.log('Content change:', newContent);
         // Broadcast the updated content to other users in the same document room
         socket.to(documentId).emit('updateContent', newContent);
     });
 
-  // Listening for title changes from a user
+    // Listening for title changes from a user
     socket.on('titleChange', ({ documentId, newTitle }) => {
-        console.log('Title change:', newTitle);
         // Broadcast the updated title to other users in the room
         socket.to(documentId).emit('updateTitle', newTitle);
-  });
+    });
 
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id);
