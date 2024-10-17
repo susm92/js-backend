@@ -15,3 +15,6 @@ SECRET_KEY=<Nyckel för att signera och skapa JWT tokens>
 MAILGUN_API_KEY=<API nyckel för mailgund>
 MAILGUN_DOMAIN=<Domän för mailgun mailflöde>
 ```
+
+Applikationen startas via kommando
+`npm run watch`
