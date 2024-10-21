@@ -13,7 +13,6 @@ const authRoutes = require('./routes/auth.js');
 const mgRoutes = require('./routes/mailgun.js');
 
 const port = process.env.PORT || 8080;
-const socketPORT = process.env.SOCKET_PORT || 3030;
 
 app.use(cors());
 app.options('*', cors());
@@ -79,7 +78,4 @@ app.use('/auth', authRoutes);
 app.use('/mailgun', mgRoutes);
 
 // Start up server
-app.listen(port, () => console.log(`Example API listening on port ${port}!`));
-
-io.listen(socketPORT);
-console.log(`Socket.IO server is running on port ${socketPORT}`);
+httpServer.listen(port, () => console.log(`Example API listening on port ${port}!`));
