@@ -48,6 +48,16 @@ io.on('connection', (socket) => {
         socket.to(documentId).emit('updateTitle', newTitle);
     });
 
+    socket.on('addComment', ({ documentId, comments }) => {
+        // Broadcast the new comment to other users in the room
+        socket.to(documentId).emit('newComment', comments);
+    });
+
+    socket.on('removeComment', ({ documentId, comments }) => {
+        // Broadcast the new comment to other users in the room
+        socket.to(documentId).emit('deletedComments', comments);
+    });
+
     socket.on('disconnect', () => {
         console.log('Client disconnected', socket.id);
     });
