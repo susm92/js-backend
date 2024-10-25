@@ -30,30 +30,23 @@ const io = require("socket.io")(httpServer, {
 io.on('connection', (socket) => {
     console.log('New client connected', socket.id);
 
-    // Handle joining a room
     socket.on('joinRoom', (documentId) => {
-        socket.join(documentId); // Join the specified room
+        socket.join(documentId);
     });
 
-    // Listening for content changes from a user
     socket.on('contentChange', ({ documentId, newContent }) => {
-        // Broadcast the updated content to other users in the same document room
         socket.to(documentId).emit('updateContent', newContent);
     });
 
-    // Listening for title changes from a user
     socket.on('titleChange', ({ documentId, newTitle }) => {
-        // Broadcast the updated title to other users in the room
         socket.to(documentId).emit('updateTitle', newTitle);
     });
 
     socket.on('addComment', ({ documentId, comments }) => {
-        // Broadcast the new comment to other users in the room
         socket.to(documentId).emit('newComment', comments);
     });
 
     socket.on('removeComment', ({ documentId, comments }) => {
-        // Broadcast the new comment to other users in the room
         socket.to(documentId).emit('deletedComments', comments);
     });
 
@@ -62,7 +55,6 @@ io.on('connection', (socket) => {
     });
 });
 
-// Add a route
 app.get("/", (req, res) => {
     const data = {
         data: {

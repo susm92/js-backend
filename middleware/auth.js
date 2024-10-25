@@ -1,9 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const secretKey = `${process.env.SECRET_KEY}`; // Hard-coded secret key for demonstration
+const secretKey = `${process.env.SECRET_KEY}`;
 
 const authenticateToken = (req, res, next) => {
-    // Extract token from 'Authorization' header
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -27,8 +26,8 @@ const authenticateToken = (req, res, next) => {
                 }
             });
         }
-        req.user = user; // Attach user info to the request object
-        next(); // Proceed to the next middleware/route handler
+        req.user = user;
+        next();
     });
 };
 
