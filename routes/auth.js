@@ -55,7 +55,6 @@ router.post('/login', async (req, res, next) => {
 });
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
-
     return res.json({
         message: 'You have access to this protected route',
         user: req.user
